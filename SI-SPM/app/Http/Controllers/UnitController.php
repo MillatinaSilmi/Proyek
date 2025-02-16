@@ -8,6 +8,7 @@ class UnitController extends Controller
 {
     // Menampilkan form input data unit
    // Menampilkan form input dan data unit (termasuk fitur pencarian)
+   
    public function create(Request $request)
 {
     // Ambil kata kunci dari input pencarian

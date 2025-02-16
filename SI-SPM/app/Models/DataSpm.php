@@ -41,13 +41,19 @@ class DataSpm extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class, 'id_unit','id_unit');  // Pastikan 'id_unit' adalah nama kolom yang merujuk ke unit
+   
     }
+
 
    // Pastikan relasi belongsTo dengan model Rak
     public function rak()
     {
         return $this->belongsTo(Rak::class, 'id_rak'); // 'id_rak' adalah kolom yang merujuk ke tabel 'rak'
     }
-    
+    // Di model Dataspm
+
+
+
+
 }
 

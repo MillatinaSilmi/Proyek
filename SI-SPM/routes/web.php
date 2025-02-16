@@ -28,6 +28,10 @@ Route::get('/datauser', function () {
 Route::get('/home', function () {
     return view('home');
 });
+
+Route::get('/homepegawai', function () {
+    return view('homepegawai');
+});
 Route::get('/login', function () {
     return view('login');
 });
@@ -107,6 +111,13 @@ Route::get('/laporan/convert-to-pdf', [LaporanSpmController::class, 'convertToPd
 Route::get('/laporanunit', function () {
     return view('laporanunit.index');
 });
+Route::get('/laporanunit', function () {
+    return view('laporanunitpegawai.index');
+});
+
+// routes/web.php
+use App\Http\Controllers\LaporanUnitController;
+
 
 use App\Http\Controllers\LaporanSpmControllerUnit;
 
@@ -174,6 +185,8 @@ Route::put('rak/{id_rak}', [RakController::class, 'update'])->name('rak.update')
 // Handle the deletion of Rak data
 Route::delete('rak/{id_rak}', [RakController::class, 'destroy'])->name('rak.destroy');
 
+
+
 // Route untuk Hapus
 Route::delete('datauser/{NIP}', [UserController::class, 'destroy'])->name('datauser.destroy');
 
@@ -185,3 +198,91 @@ Route::get('/datauser/{NIP}/edit', [UserController::class, 'edit'])->name('datau
 // Route untuk melakukan update (PUT)
 Route::put('/datauser/{NIP}', [UserController::class, 'update'])->name('datauser.update');
 
+//logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+use App\Http\Controllers\PegawaiController;  // Pastikan controller PegawaiController sudah di-import
+
+Route::get('/homepegawai', [PegawaiController::class, 'index'])->name('homepegawai');
+
+
+
+use App\Http\Controllers\LaporanSpmControllerUnitPegawai;
+
+Route::get('/laporanunitpegawai', [LaporanSpmControllerUnitPegawai::class, 'showLaporanUnit'])->name('laporanunitpegawai.index');
+Route::get('/laporanunitpegawai/search', [LaporanSpmControllerUnitPegawai::class, 'search'])->name('laporanunitpegawai.search');
+Route::get('/laporanunitpegawai/pdf', [LaporanSpmControllerUnitPegawai::class, 'convertToPdf'])->name('laporanunitpegawai.convertToPdf');
+
+// routes/web.php
+
+
+Route::get('/convert-to-pdf/{nospm}', [SPMController::class, 'convertToPdf'])->name('indexfilter.convertToPdf');
+
+Route::get('/indexfilter', function () {
+    return view('indexfilter');
+});
+
+Route::get('/indexfilteradmin/searchNo', [SPMController::class, 'search'])->name('indexfilteradmin.search');
+
+Route::get('/indexfilteradmin', function () {
+    return view('indexfilteradmin');
+});
+
+Route::get('/indexfilteradmin/search', [SPMController::class, 'search'])->name('indexfilteradmin.search');
+
+
+Route::get('/laporankualifikasipegawai', function () {
+    return view('laporankualifikasipegawai');
+});
+Route::get('/laporankualifikasipegawai/searchKualifikasi', [LaporanSPMController::class, 'searchKualifikasi'])->name('laporankualifikasipegawai.searchKualifikasi');
+Route::get('/laporankualifikasipegawai/convert-to-pdf', [LaporanSpmController::class, 'convertToPdf'])->name('laporankualifikasipegawai.convertToPdfKualifikasi');
+
+Route::get('/laporanunitpegawai', [LaporanSpmControllerUnit::class, 'showLaporanUnitPegawai'])->name('laporanunitpegawai.index');
+Route::get('/laporanunitpegawai/searchUnitPegawai', [LaporanSpmControllerUnit::class, 'searchUnitPegawai'])->name('laporanunitpegawai.search');
+Route::get('/laporanunitpegawai/pdf', [LaporanSpmControllerUnit::class, 'convertToPdfUnitPegawai'])->name('laporanunitpegawai.convertToPdfUnitPegawai');
+
+Route::get('/rak/input-rak', [RakController::class, 'create'])->name('rak.create');
+Route::get('/rak/home', [RakController::class, 'home'])->name('rak.home');
+
+
+Route::get('/rak/{id}/dataspm', [RakController::class, 'showDataSpm'])->name('rak.dataspm');
+
+Route::get('/dataspm', [DataSPMController::class, 'index'])->name('dataspm');
+Route::get('/datarak', [RakController::class, 'index'])->name('datarak');
+Route::get('/laporanunit', [LaporanUnitController::class, 'index'])->name('laporanunit');
+Route::get('/laporan', [LaporanSpmController::class, 'index'])->name('laporan');
+
+// Misalnya ini untuk Data Rak
+Route::get('/datarak', [RakController::class, 'index'])->name('datarak.index');
+// Misalnya untuk Laporan SPM Unit
+Route::get('/laporanunit', [LaporanSPMControllerUnit::class, 'index'])->name('laporanunit.index');
+
+Route::get('/laporan', [LaporanSpmController::class, 'index']);
+// routes/web.php
+Route::get('/dataspm', [DataSpmController::class, 'index'])->name('dataspm.index');
+
+Route::get('/unit/create', [UnitController::class, 'create'])->name('unit.create');
+
+
+
+// Definisikan route untuk halaman 'dataspm'
+Route::get('/dataspm', [DataSPMController::class, 'index'])->name('dataspm');
+Route::get('dataspm', [DataSPMController::class, 'index'])->name('dataspm.index');
+
+// routes/web.php
+Route::get('spm/generate-pdf/{nospm}', [DetailController::class, 'generatePdf'])->name('detail.generatePdf');
+
+Route::get('/user/input', [UserController::class, 'create'])->name('input-user');
+
+// routes/web.php
+
+
+
+Route::get('/datauser/search', [UserController::class, 'search'])->name('datauser.search');
+Route::get('/unit/create', [UnitController::class, 'create'])->name('unit.create');
+
+//Route::get('/indexfilteradmin/convertToPdf', [SPMController::class, 'convertToPdf'])->name('indexfilteradmin.convertToPdf');
+Route::get('/indexfilteradmin/{nospm}/{type}/convertToPdf', [SPMController::class, 'convertToPdf'])->name('indexfilteradmin.convertToPdf');
+
+// routes/web.php
+Route::get('/indexfilter/searchNoPegawai', [SPMController::class, 'searchNoPegawai'])->name('indexfilter.searchNoPegawai');

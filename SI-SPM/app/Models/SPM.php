@@ -11,7 +11,7 @@ class SPM extends Model
     protected $table = 'dataspm'; // Nama tabel di database
     protected $primaryKey = 'nospm'; // Primary key adalah nospm
     protected $keyType = 'string'; // Jika primary key berupa string
-    
+    protected $fillable = ['no_spm', 'uraian', 'tanggal_spm', 'nominal_spm', 'kualifikasi_pembayaran', 'create_at', 'update_at'];
     public $incrementing = false; // Jika primary key bukan auto-increment
    
     public function unit()
@@ -25,7 +25,7 @@ class SPM extends Model
     return view('dataspm.index', compact('dataspm'));
 }
 
-protected $fillable = ['nospm', 'uraian', 'id_unit','id_rak'];
+
 
 
 
@@ -36,6 +36,7 @@ public function rak()
 {
     return $this->belongsTo(rak::class, 'id_rak');  // 'rak_id' adalah foreign key
 }
+
 
 
 }

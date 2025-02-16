@@ -4,6 +4,7 @@ use PDF;
 use Illuminate\Http\Request;
 use App\Models\SPM; // Pastikan Model SPM sesuai dengan tabel Anda
 use App\Models\Dataspm; // Menambahkan import model Dataspm
+use Illuminate\Support\Str;
 
 class DetailController extends Controller
 {
@@ -69,20 +70,18 @@ class DetailController extends Controller
     }
 
   
-    public function generatePdf($nospm)
+    public function generatePdf(Request $request, $nospm)
 {
-    // Fetch the data based on the provided nospm
-    $data = SPM::with('rak')->where('nospm', $nospm)->firstOrFail();
-    
-    // Get the unit name, you may need to adjust this query based on your relationships
-    $nama_unit = $data->unit->name;
+    // Mendapatkan data berdasarkan nospm
+    $spm = SPM::where('nospm', $nospm)->first();
 
-    // Generate the PDF from the view
-    $pdf = PDF::loadView('spm.detail', compact('data', 'nama_unit'));
+    // Debugging untuk memastikan data yang dikirim ke view
+    if($spm) {
+        //dd($spm); // Melihat isi object SPM
+    }
 
-    return response($pdf->output(), 200)
-    ->header('Content-Type', 'application/pdf')
-    ->header('Content-Disposition', 'inline; filename="SPM_' . $data->nospm . '.pdf"');
-    
+    // Mengirim data ke view
+    return view('laporan_spm_pdf_detail', compact('spm'));
 }
-}
+
+}    

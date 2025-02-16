@@ -79,9 +79,10 @@ class RakController extends Controller
     {$request->validate([
        
             'id_rak' => 'required|string|max:255|unique:rak,id_rak|not_in:0',
-            'nama_rak' => 'required|string|min:8',
+           'nama_rak' => 'required|string|min:8|unique:rak,nama_rak',  // Ensuring unique 'nama_rak'
             'id_lokasi' => 'required|exists:lokasirak,id_lokasi',
         ]);
+        
 
         rak::create([
             'id_rak' => $request['id_rak'],
@@ -94,19 +95,18 @@ class RakController extends Controller
     
 
     public function search(Request $request)
-    {
-        {
-            // Mengambil kata kunci dari input pencarian
-            $nama_rak = $request->input('nama_rak');
+{
+    // Mengambil kata kunci dari input pencarian
+    $nama_rak = $request->input('nama_rak');
+
+    // Pencarian rak berdasarkan nama yang mengandung kata kunci
+    // Menggunakan paginate() untuk mendapatkan data dengan pagination
+    $datarak = Rak::where('nama_rak', 'like', '%' . $nama_rak . '%')->paginate(6);  // 10 items per page
     
-            // Pencarian user berdasarkan nama yang mengandung kata kunci
-            $datarak = rak::where('nama_rak', 'like', '%' . $nama_rak . '%')->get();
-    
-            // Kembalikan hasil pencarian ke view
-            return view('datarak.index', compact('datarak', 'nama_rak'));
-           
-        }
-    }
+    // Kembalikan hasil pencarian ke view
+    return view('datarak.index', compact('datarak', 'nama_rak'));
+}
+
     public function edit($id_rak)
 {
     // Find the Rak by ID
@@ -118,14 +118,11 @@ class RakController extends Controller
 
 public function update(Request $request, $id_rak)
 {
-  
-$rakCount = Rak::where('id_rak', $id_rak)
-->where('id_rak', '<>', $id_rak)
-->count();
+     // Cari rak berdasarkan id_rak yang diterima dari URL
+     $rak = Rak::findOrFail($id_rak); // Akan melempar 404 jika tidak ditemukan
 
     // Validasi input
     $validated = $request->validate([
-       // 'id_rak' => 'required|unique:rak,id_rak,' . $id_rak, // Pastikan id_rak unik kecuali untuk rak yang sedang diupdate
         'nama_rak' => 'required|string|max:255',
         'id_lokasi' => 'required|integer',
     ]);
@@ -136,21 +133,23 @@ $rakCount = Rak::where('id_rak', $id_rak)
     // Update rak dengan data yang sudah divalidasi
     $rak->update($validated);
 
-        
     // Redirect to the Rak index page with a success message
     return redirect()->route('datarak.index')->with('success', 'Rak updated successfully!');
 }
 
-    // Handle the deletion of the Rak
-    public function destroy($id_rak)
+
+public function destroy($id_rak)
+{
+    \Log::info('Deleting Rak with ID: ' . $id_rak);
+
+    $rak = Rak::findOrFail($id_rak);
+    $rak->delete();
+
+    return redirect()->route('datarak.index')->with('success', 'Rak deleted successfully!');
+}
+//Fungsi untuk menampilkan halaman home rak
+    public function home()
     {
-        // Find the Rak by ID
-        $rak = Rak::findOrFail($id_rak);
-
-        // Delete the Rak
-        $rak->delete();
-
-        // Redirect to the Rak index page with a success message
-        return redirect()->route('datarak.index')->with('success', 'Rak deleted successfully!');
+        return view('home');  // Pastikan view rak.home ada
     }
 }

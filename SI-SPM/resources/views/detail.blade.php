@@ -153,62 +153,77 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">
-            
-        </div>
-        <div class="menu">
-            <ul>
-                <li>
-                    <button onclick="toggleMenu('kelola-spm')" class="active">Kelola Data SPM</button>
-                    <ul id="kelola-spm">
-                    <li><button onclick="redirectToPage('dataspm')"> Data SPM</button></li>
-                       </ul>
-                    <script>
-    function redirectToPage(url) {
-        window.location.href = url;
-    }
-</script>
-                </li>
-                <li>
-                    <button onclick="toggleMenu('kelola-rak')">Kelola Rak</button>
-                    <ul id="kelola-rak">
-                    <li><button onclick="redirectToPage('datarak')"> Data RAK</button></li>
-                        
-                    </ul>
-                </li>
-                <li>
-                    <button onclick="toggleMenu('kelola-unit')">Kelola Unit</button>
-                    <ul id="kelola-unit">
-                    <li><button onclick="redirectToPage('dataunit')"> Data Unit</button></li>
-                    </ul>
-                </li>
-                <li>
-                    <button onclick="toggleMenu('kelola-user')">Kelola User</button>
-                    <ul id="kelola-user">
-                    <li><button onclick="redirectToPage('datauser')"> Data User</button></li>
-                    </ul>
-                </li>
-                <li>
-                    <button onclick="toggleMenu('laporan-spm')">Laporan SPM</button>
-                    <ul id="laporan-spm">
-                    <li><button onclick="redirectToPage('dataspm')"> Laporan By No SPM </button></li>    
-                    <li><button onclick="redirectToPage('laporanunit')"> Laporan By Unit </button></li>
-                    <li><button onclick="redirectToPage('laporan')">Laporan By Klasifikasi Pembayaran</button></li>
-                        
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="logout">
-    <!-- Form logout -->
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf  <!-- Pastikan untuk menyertakan token CSRF -->
-        <button type="submit">Logout</button>
-    </form>
-</div>
+<div class="sidebar">
+    <div class="logo">
+        <!-- Logo Here -->
     </div>
+    <div class="menu">
+        <ul>
+            <li>
+                <button onclick="toggleMenu('kelola-spm')" class="active">Kelola Data SPM</button>
+                <ul id="kelola-spm">
+                    <li><button onclick="redirectToPage('/dataspm')"> Data SPM</button></li>
+                </ul>
+            </li>
+            <li>
+                <button onclick="toggleMenu('kelola-rak')">Kelola Rak</button>
+                <ul id="kelola-rak">
+                    <li><button onclick="redirectToPage('/datarak')"> Data RAK</button></li>
+                </ul>
+            </li>
+            <li>
+                <button onclick="toggleMenu('kelola-unit')">Kelola Unit</button>
+                <ul id="kelola-unit">
+                    <li><button onclick="redirectToPage('/dataunit')"> Data Unit</button></li>
+                </ul>
+            </li>
+            <li>
+                <button onclick="toggleMenu('kelola-user')">Kelola User</button>
+                <ul id="kelola-user">
+                    <li><button onclick="redirectToPage('/datauser')"> Data User</button></li>
+                </ul>
+            </li>
+            <li>
+                <button onclick="toggleMenu('laporan-spm')">Laporan SPM</button>
+                <ul id="laporan-spm">
+                    <li><button onclick="redirectToPage('/dataspm')"> Laporan By No SPM </button></li>
+                    <li><button onclick="redirectToPage('/laporanunit')"> Laporan By Unit </button></li>
+                    <li><button onclick="redirectToPage('/laporan')">Laporan By Klasifikasi Pembayaran</button></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="logout">
+        <!-- Form logout -->
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function redirectToPage(url) {
+        // Directly redirect to the absolute URL
+        window.location.href = url;  // This should now navigate correctly to '/dataunit', '/dataspm', etc.
+    }
+
+    // Menu toggle function to expand/collapse submenu
+    function toggleMenu(menuId) {
+        const menus = document.querySelectorAll('.sidebar ul li ul');
+        menus.forEach(menu => {
+            if (menu.id === menuId) {
+                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            } else {
+                menu.style.display = 'none';
+            }
+        });
+    }
+
+    // Optionally set default menu open on page load
+    document.getElementById('kelola-spm').style.display = 'block';
+</script>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -382,14 +397,30 @@
         window.location.href = url;
     }
 </script>
-                </li>
-                <li>
-                    <button onclick="toggleMenu('kelola-rak')">Kelola Rak</button>
-                    <ul id="kelola-rak">
-                    <li><button onclick="redirectToPage('datarak')"> Data RAK</button></li>
-                        
-                    </ul>
-                </li>
+<li>
+    <button onclick="toggleMenu('kelola-rak')">Kelola Rak</button>
+    <ul id="kelola-rak">
+        <li><button onclick="redirectToPage('/datarak')">Data RAK</button></li>
+    </ul>
+</li>
+
+<script>
+    function toggleMenu(menuId) {
+        const menus = document.querySelectorAll('.sidebar ul li ul');
+        menus.forEach(menu => {
+            if (menu.id === menuId) {
+                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            } else {
+                menu.style.display = 'none';
+            }
+        });
+    }
+
+    function redirectToPage(url) {
+        window.location.href = url; // Navigate directly to the URL
+    }
+</script>
+
                 <li>
                     <button onclick="toggleMenu('kelola-unit')">Kelola Unit</button>
                     <ul id="kelola-unit">
@@ -586,16 +617,22 @@
     <a href="{{ route('edit', $item->nospm) }}" class="btn btn-primary" style="padding: 5px 10px; background-color:rgb(66, 121, 96); color: white; text-decoration: none; border-radius: 5px; margin-top: 20px; display: inline-block;">
     Edit
 </a>
-<a href="{{ route('detail.generatePdf', ['nospm' => $item->nospm]) }}" class="btn btn-primary" style="padding: 5px 10px; background-color:rgb(66, 121, 96); color: white; text-decoration: none; border-radius: 5px; margin-top: 20px; display: inline-block;">
-    Unduh Laporan SPM dalam PDF
-</a>
-<form action="{{ route('destroy', $item->nospm) }}" method="POST" style="margin-top: 20px; display: inline-block;">
+
+
+<form action="{{ route('destroy', $item->nospm) }}" method="POST" style="margin-top: 20px; display: inline-block;" onsubmit="return confirmDelete()">
     @csrf
     @method('DELETE')
     <button type="submit" style="padding: 8px 10px; background-color:rgb(66, 121, 96); color: white; text-decoration: none; border-radius: 5px; border: none;">
         Hapus SPM
     </button>
 </form>
+
+<script>
+    function confirmDelete() {
+        return confirm("Apakah Anda yakin ingin menghapus data ini?");
+    }
+</script>
+
 
 </body>
 </html>

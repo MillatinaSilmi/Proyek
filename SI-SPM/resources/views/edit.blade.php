@@ -539,11 +539,11 @@
 @endif
 
 <!-- Form to update data --><table border="1" style="border-collapse: collapse; width: 100%; margin-top: 20px;">
-<form action="{{ route('update', $spm->nospm) }}" method="POST"  enctype="="multipart/form-data">
+<form action="{{ route('update', $spm->nospm) }}" method="POST"  enctype="multipart/form-data">
     @csrf
     @method('PUT')
     
-   
+  
 
 
     <tr>
@@ -597,6 +597,23 @@
         @enderror
     </td>
 </tr>
+<tr>
+    <th style="padding: 8px; text-align: left;">Nama Rak</th>
+    <td style="padding: 8px;">
+        <select name="id_rak" id="id_rak" class="form-control" required>
+            <option value="">Pilih Nama Rak</option> <!-- Placeholder untuk pilihan rak -->
+            @foreach($rak as $rakItem) <!-- Misalkan $rak berisi daftar rak -->
+                <option value="{{ $rakItem->id_rak }}" 
+                    {{ $rakItem->id_rak == $spm->id_rak ? 'selected' : '' }}>
+                    {{ $rakItem->nama_rak }} <!-- Menampilkan nama rak -->
+                </option>
+            @endforeach
+        </select>
+        @error('id_rak')
+            <p style="color: red;">{{ $message }}</p>
+        @enderror
+    </td>
+</tr>
 
 <tr>
     <th style="padding: 8px; text-align: left;">Uraian SPM</th>
@@ -612,7 +629,7 @@
         <td style="padding: 8px;"> <input type="text" name="nominal_spm" id="nominal_spm" value="{{ old('nominal_spm', $spm->nominal_spm) }}" required></td>
     </tr>
    
-    <<tr>
+    <tr>
    <td> <label for="dokumen">Dokumen:</label></td>
     <td>   <input type="file" name="dokumen" accept=".pdf,.jpg,.png" />
     @if($spm->dokumen)

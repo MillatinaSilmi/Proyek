@@ -154,71 +154,54 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo">
-            
-        </div>
-        <div class="menu">
-            <ul>
-                <li>
-                    <button onclick="toggleMenu('kelola-spm')" class="active">Kelola Data SPM</button>
-                    <ul id="kelola-spm">
-                    <li><button onclick="redirectToPage('dataspm')"> Data SPM</button></li>
-                       </ul>
-                    <script>
-    function redirectToPage(url) {
-        window.location.href = url;
-    }
-</script>
-                </li>
-                <li>
-                    <button onclick="toggleMenu('kelola-rak')">Kelola Rak</button>
-                    <ul id="kelola-rak">
-                    <li><button onclick="redirectToPage('datarak')"> Data RAK</button></li>
-                        
-                    </ul>
-                </li>
-                <li>
-                    <button onclick="toggleMenu('kelola-unit')">Kelola Unit</button>
-                    <ul id="kelola-unit">
-                    <li><button onclick="window.location.href='{{ route('unit.create') }}'">Data Unit</button>
-                    </li>
-                    </ul>
-                </li>
-                <li>
-                    <button onclick="toggleMenu('kelola-user')">Kelola User</button>
-                    <ul id="kelola-user">
-                    <li><button onclick="redirectToPage('datauser')"> Data User</button></li>
-                    </ul>
-                </li>
-                <li>
-                    <button onclick="toggleMenu('laporan-spm')">Laporan SPM</button>
-                    <ul id="laporan-spm">
-                    <li><button onclick="redirectToPage('dataspm')"> Laporan By No SPM </button></li>    
-                    <li><button onclick="redirectToPage('laporanunit')"> Laporan By Unit </button></li>
-                    <li><button onclick="redirectToPage('laporan')">Laporan By Klasifikasi Pembayaran</button></li>
-                        
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="logout">
-    <!-- Form logout -->
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf  <!-- Pastikan untuk menyertakan token CSRF -->
-        <button type="submit">Logout</button>
-    </form>
-</div>
+     <!-- Sidebar -->
+   <div class="sidebar">
+    <div class="logo">
+        <!-- Logo Section -->
     </div>
+    <div class="menu">
+        <ul>
+        <li>
+    <button onclick="toggleMenu('laporan-spm')">Laporan SPM</button>
+    <ul id="laporan-spm" style="display: none;">
+        <li><button onclick="redirectToPage('{{ url('indexfilter') }}')" class="menu-link">Laporan By No SPM</button></li>
+        <li><button onclick="redirectToPage('{{ url('laporanunitpegawai') }}')" class="menu-link">Laporan By Unit</button></li>
+        <li><button onclick="redirectToPage('{{ url('laporankualifikasipegawai') }}')" class="menu-link">Laporan By Klasifikasi Pembayaran</button></li>
+    </ul>
+</li>
+
+        </ul>
+    </div>
+    <script>
+    // This function toggles the display of the submenu
+function toggleMenu(menuId) {
+    const menu = document.getElementById(menuId);
+    if (menu.style.display === 'none' || menu.style.display === '') {
+        menu.style.display = 'block';  // Show the submenu
+    } else {
+        menu.style.display = 'none';   // Hide the submenu
+    }
+}
+
+// Function for redirection
+function redirectToPage(url) {
+    window.location.href = url;
+}
+</script>
+    <div class="logout">
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+
 
     <!-- Main Content -->
     <div class="content">
         <div class="header">
             
-            <div class="user">
-             <h1> Sistem Informasi Arsip SPM</h1>
-            
-            </div>
+         
         </div>
         
         <!DOCTYPE html>
@@ -327,13 +310,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data SPM</title>
+    <title>Laporan SPM Berdasarkan Kualifikasi Pembayaran</title>
 </head>
 <body>
-   
+    <h3>Laporan SPM Berdasarkan Kualifikasi Pembayaran</h3>
+
+   <!-- Tampilkan pesan error jika nomor SPM tidak ditemukan -->
+    @if(session('error'))
+        <p style="color: red;">{{ session('error') }}</p>
+    @endif
+
+    <form method="GET" action="{{ route('laporankualifikasipegawai.searchKualifikasi') }}">
+    <select name="kualifikasi_pembayaran" class="form-control">
+        <option value="Belanja Modal" {{ old('kualifikasi_pembayaran') == 'Belanja Modal' ? 'selected' : '' }}>Belaja Modal</option>
+        <option value="Belanja Barang" {{ old('kualifikasi_pembayaran') == 'Belanja Barang' ? 'selected' : '' }}>Belanja Barang</option>
+        <option value="Belanja Pegawai" {{ old('kualifikasi_pembayaran') == 'Belanja Pegawai' ? 'selected' : '' }}>Belanja Pegawai</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Cari</button>
+</form>
+
+             
+    <style>
+        .btn {
+            background-color:rgb(70, 139, 70); /* Hijau */
+            color: white;
+            padding: 4px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color:rgb(116, 152, 116); /* Efek hover */
+        }
+    </style>
 </head>
 <body>
 
+
+
+    </form>
+
+    @if(isset($laporanSpm) && $laporanSpm->isNotEmpty())
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nomor SPM</th>
+                    <th>Kualifikasi Pembayaran</th>
+                    <th>Uraian</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($laporanSpm as $spm)
+                    <tr>
+                        <td>{{ $spm->nospm }}</td>
+                        <td>{{ $spm->kualifikasi_pembayaran }}</td>
+                        <td>{{ $spm->uraian }}</td>
+                    </tr>
+
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+         
+    <form action="{{ route('laporankualifikasipegawai.convertToPdfKualifikasi') }}" method="GET">
+        <input type="hidden" name="kualifikasi_pembayaran" value="{{ $kualifikasiPembayaran }}">
+        
+        <button type="submit" class="btn btn-success">Convert to PDF</button>
+    </form>
+        @else
+            <p>Tidak ada data yang ditemukan untuk kualifikasi pembayaran  .</p>
+        @endif
+    </div>
+    
     
 </body>
 </html>
@@ -349,7 +402,8 @@
             });
         }
 
-       
+        // Set default menu open
+        document.getElementById('laporan-spm').style.display = 'block';
     </script>
 </body>
 </html>

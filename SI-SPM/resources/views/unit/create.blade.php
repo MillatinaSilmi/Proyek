@@ -241,7 +241,7 @@
         <div class="menu">
             <ul>
                 <li>
-                    <button onclick="toggleMenu('kelola-spm')" class="active">Kelola Data SPM</button>
+                    <button onclick="toggleMenu('kelola-spm')" >Kelola Data SPM</button>
                     <ul id="kelola-spm">
                         <li><button onclick="window.location.href='/dataspm'"> Data SPM</button></li>
                     </ul>
@@ -253,7 +253,7 @@
                     </ul>
                 </li>
                 <li>
-                    <button onclick="toggleMenu('kelola-unit')">Kelola Unit</button>
+                    <button onclick="toggleMenu('kelola-unit')"class="active">Kelola Unit</button>
                     <ul id="kelola-unit">
                         <li><button onclick="window.location.href='/unit/create'">Data Unit</button></li>
                     </ul>
@@ -267,7 +267,7 @@
                 <li>
                     <button onclick="toggleMenu('laporan-spm')">Laporan SPM</button>
                     <ul id="laporan-spm">
-                        <li><button onclick="window.location.href='/laporanbyspm'"> Laporan By No SPM </button></li>
+                        <li><button onclick="window.location.href='/indexfilteradmin'"> Laporan By No SPM </button></li>
                         <li><button onclick="window.location.href='/laporanunit'"> Laporan By Unit </button></li>
                         <li><button onclick="window.location.href='/laporan'">Laporan By Klasifikasi Pembayaran</button></li>
                     </ul>
@@ -339,12 +339,18 @@
                             <td>{{ $unit->id_unit }}</td>
                             <td>{{ $unit->nama_unit }}</td>
                             <td>
-                                <a href="{{ route('unit.edit', $unit->id_unit) }}" style="background-color: #8aae92; color: white; padding: 5px 10px; border-radius: 5px; text-decoration: none;">Edit</a>
-                                <form action="{{ route('unit.destroy', $unit->id_unit) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus unit ini?');" style="background-color: #8aae92; color: white; padding: 5px 10px; border-radius: 5px;">Hapus</button>
-                                </form>
+                            <a href="{{ route('unit.edit', $unit->id_unit) }}" style="background-color: #8aae92; color: white; padding: 5px 10px; border-radius: 5px; text-decoration: none;" onclick="return confirm('Apakah Anda yakin ingin mengedit unit ini?')">
+    Edit
+</a>
+
+<form action="{{ route('unit.destroy', $unit->id_unit) }}" method="POST" style="display: inline;">
+    @csrf
+    @method('DELETE')
+    <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus unit ini?');" style="background-color: #8aae92; color: white; padding: 5px 10px; border-radius: 5px;">
+        Hapus
+    </button>
+</form>
+
                             </td>
                         </tr>
                     @endforeach

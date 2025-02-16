@@ -114,7 +114,20 @@
             display: flex;
             align-items: center;
         }
+        .home-btn {
+    background-color: #8aae92;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
 
+.home-btn:hover {
+    background-color: #7b9a7a;
+}
         .content .header .user img {
             height: 40px;
             width: 40px;
@@ -280,11 +293,11 @@
     <!-- Main Content -->
     <div class="content">
         <div class="header">
-            <h1>Kelola Rak</h1>
+            <h2>Kelola Rak</h2>
             <div class="user">
-                <img src="user-profile.jpg" alt="User" />
-                <span>Welcome, User</span>
-            </div>
+        <!-- Add the Home button here -->
+        <button class="home-btn" onclick="window.location.href='home'">Home</button>
+    </div>
         </div>
 
         <div class="form-container">

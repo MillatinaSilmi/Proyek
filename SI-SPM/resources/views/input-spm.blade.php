@@ -334,6 +334,28 @@
     @if(session('error'))
         <p style="color: red;">{{ session('error') }}</p>
     @endif
+    @if(session('success'))
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast align-items-center text-white bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ session('success') }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Automatically hide the toast after 3 seconds
+        setTimeout(function() {
+            var toast = document.querySelector('.toast');
+            var bootstrapToast = new bootstrap.Toast(toast);
+            bootstrapToast.hide();
+        }, 3000);
+    </script>
+@endif
+
 
         <style>
         .btn {
@@ -410,6 +432,20 @@
             </select><br><br>
         </th>
     </tr>
+    <!-- Menambahkan Pilihan Rak -->
+<tr>
+    <th><label for="id_rak">Rak:</label></th>
+    <th>
+        <select id="id_rak" name="id_rak" required>
+            <option value="">-- Pilih Rak --</option>
+            @foreach($rak as $rakItem) <!-- Loop untuk menampilkan semua rak -->
+                <option value="{{ $rakItem->id_rak }}" {{ old('id_rak') == $rakItem->id_rak ? 'selected' : '' }}>
+                    {{ $rakItem->nama_rak }}
+                </option>
+            @endforeach
+        </select><br><br>
+    </th>
+</tr>
     <tr>
     <th>
         <label for="dokumen"Upload Dokumen (PDF):</label>Dokumen</th>

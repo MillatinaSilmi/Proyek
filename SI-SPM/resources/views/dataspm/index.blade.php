@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Informasi Arsip SPM</title>
     <style>
+        /* Styling untuk body dan sidebar */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f1f8f4;
             display: flex;
+            height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 250px;
-            height: 100vh;
-            background-color: #a7c8b6;
+            height: 100%;
+                       background-color: #a7c8b6;
             color: white;
             position: fixed;
             top: 0;
@@ -26,17 +27,8 @@
             flex-direction: column;
         }
 
-        .sidebar .logo {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: #8aae92;
-        }
+        
 
-        .sidebar .logo img {
-            height: 40px;
-            margin-right: 10px;
-        }
 
         .sidebar .menu {
             flex-grow: 1;
@@ -71,7 +63,7 @@
         .sidebar ul li ul {
             display: none;
             padding-left: 20px;
-            background-color: #93b6a0;
+            background-color: #8aae92;
         }
 
         .sidebar ul li ul li button {
@@ -80,9 +72,9 @@
 
         .sidebar .logout {
             margin-top: auto;
-            background-color: #8aae92;
             padding: 15px;
             text-align: center;
+            background-color: #8aae92;
         }
 
         .sidebar .logout button {
@@ -94,11 +86,12 @@
             cursor: pointer;
         }
 
-        /* Main Content */
+        /* Styling untuk main content */
         .content {
             margin-left: 250px;
             padding: 20px;
             flex-grow: 1;
+            position: relative;
         }
 
         .content .header {
@@ -108,20 +101,9 @@
             margin-bottom: 20px;
         }
 
-        .content .header .user {
-            display: flex;
-            align-items: center;
-        }
-
-        .content .header .user img {
-            height: 40px;
-            width: 40px;
-            border-radius: 50%;
-            margin-left: 10px;
-        }
-
         .content .search {
             display: flex;
+            justify-content: space-between;
             margin-bottom: 20px;
         }
 
@@ -144,11 +126,35 @@
             cursor: pointer;
         }
 
-        .content .data {
-            background-color: white;
-            padding: 20px;
+        .content .home-link {
+            background-color: #8aae92;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+        }
+
+        .content .home-link:hover {
+            background-color: #8aae92;
+        }
+
+        /* Styling tabel dan pagination */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
         }
     </style>
 </head>
@@ -157,250 +163,119 @@
     <div class="sidebar">
         <div class="logo">
             
+            <span></span>
         </div>
         <div class="menu">
             <ul>
                 <li>
                     <button onclick="toggleMenu('kelola-spm')" class="active">Kelola Data SPM</button>
                     <ul id="kelola-spm">
-                    <li><button onclick="redirectToPage('indexfilter')"> Data SPM</button></li>
-                       </ul>
-                    <script>
-    function redirectToPage(url) {
-        window.location.href = url;
-    }
-</script>
+                        <li><button onclick="redirectToPage('dataspm')">Data SPM</button></li>
+                    </ul>
                 </li>
                 <li>
                     <button onclick="toggleMenu('kelola-rak')">Kelola Rak</button>
                     <ul id="kelola-rak">
-                    <li><button onclick="redirectToPage('datarak')"> Data RAK</button></li>
-                        
+                        <li><button onclick="redirectToPage('datarak')">Data RAK</button></li>
                     </ul>
                 </li>
                 <li>
                     <button onclick="toggleMenu('kelola-unit')">Kelola Unit</button>
                     <ul id="kelola-unit">
-                    <li><button onclick="redirectToPage('dataunit')"> Data Unit</button></li>
+                        <li><button onclick="window.location.href='{{ route('unit.create') }}'">Data Unit</button>
+                       </li>
                     </ul>
                 </li>
                 <li>
                     <button onclick="toggleMenu('kelola-user')">Kelola User</button>
                     <ul id="kelola-user">
-                    <li><button onclick="redirectToPage('datauser')"> Data User</button></li>
+                        <li><button onclick="redirectToPage('datauser')">Data User</button></li>
                     </ul>
                 </li>
                 <li>
                     <button onclick="toggleMenu('laporan-spm')">Laporan SPM</button>
                     <ul id="laporan-spm">
-                    <li><button onclick="redirectToPage('dataspm')"> Laporan By No SPM </button></li>    
-                    <li><button onclick="redirectToPage('laporanunit')"> Laporan By Unit </button></li>
-                    <li><button onclick="redirectToPage('laporan')">Laporan By Klasifikasi Pembayaran</button></li>
-                        
+                        <li><button onclick="redirectToPage('indexfilteradmin')">Laporan By No SPM</button></li>
+                        <li><button onclick="redirectToPage('laporanunit')">Laporan By Unit</button></li>
+                        <li><button onclick="redirectToPage('laporan')">Laporan By Klasifikasi Pembayaran</button></li>
                     </ul>
                 </li>
             </ul>
         </div>
         <div class="logout">
-    <!-- Form logout -->
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf  <!-- Pastikan untuk menyertakan token CSRF -->
-        <button type="submit">Logout</button>
-    </form>
-</div>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        </div>
     </div>
 
     <!-- Main Content -->
     <div class="content">
         <div class="header">
-            
-            <div class="user">
-                
-            </div>
+            <h1>Data SPM</h1>
+            <!-- Link Home di sudut kanan atas -->
+            <a href="{{ url('home') }}" class="home-link">Home</a>
         </div>
+
+        <!-- Form Pencarian -->
+        <div class="search">
+            <form action="{{ route('search') }}" method="POST">
+                @csrf
+                <input type="text" name="search_term" placeholder="Search..." required>
+                <button type="submit">Cari</button>
+            </form>
+            <button type="button" class="btn" onclick="window.location.href='input-spm';">Tambah Data SPM</button>
+</div>
         
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table with Border</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 16px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .table-container {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
-    </style>
-</head>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table with Border</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 16px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .table-container {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        .pagination a, .pagination span {
-            margin: 0 5px;
-            padding: 8px 12px;
-            text-decoration: none;
-            color: #007bff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .pagination a:hover {
-            background-color: #f1f1f1;
-        }
-        .pagination .active {
-            background-color: #007bff;
-            color: #fff;
-            border-color: #007bff;
-        }
-        .pagination .disabled {
-            color: #ccc;
-            pointer-events: none;
-            border-color: #ddd;
-        }
-    </style>
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data SPM</title>
-</head>
-<body>
-    <h1>Data SPM</h1>
+        <div class="table-container">
+            <!-- Tampilkan pesan error jika nomor SPM tidak ditemukan -->
+            @if(session('error'))
+                <p style="color: red;">{{ session('error') }}</p>
+            @endif
 
-   <!-- Tampilkan pesan error jika nomor SPM tidak ditemukan -->
-    @if(session('error'))
-        <p style="color: red;">{{ session('error') }}</p>
-    @endif
-
-    <form action="{{ route('search') }}" method="POST">
-    
-        @csrf
-        <label for="nospm">Masukkan Kata</label>
-        <input type="text" name="search_term" placeholder="Search..." required>
-        <button type="submit">Cari</button>
-        <title>Button Link</title>
-        <button type="button" class="btn" onclick="window.location.href='input-spm';">Tambah Data SPM</button>
-    <style>
-        .btn {
-            background-color:rgb(74, 77, 74); /* Hijau */
-            color: white;
-            padding: 4px 10px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color:rgb(70, 75, 70); /* Efek hover */
-        }
-    </style>
-</head>
-<body>
-
-    
-
-</body>
-    </form>
-   
-
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>No SPM</th>
-                    <th>Uraian SPM</th>
-                    <th>Nominal SPM</th>
-                    <th>Detail</th>
-                </tr>
-            </thead>
-            <tbody>
-            @if($dataspm && $dataspm->isNotEmpty())
-    @foreach ($dataspm as $data)
+            <table>
+                <thead>
+                    <tr>
+                        <th>No SPM</th>
+                        <th>Uraian SPM</th>
+                        <th>Nominal SPM</th>
+                        <th>Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <table>
+    <thead>
         <tr>
-            <td>{{ $data->nospm }}</td>
-            <td>{{ $data->uraian }}</td>
-            <td>{{ number_format($data->nominal_spm, 2, ',', '.') }}</td>
-            <td><a href="{{ route('detail.show', $data->nospm) }}" class="btn-detail">Detail</a></td>
+            <th>No. SPM</th>
+            <th>Uraian</th>
+            <th>Nominal SPM</th>
+            <th>Action</th>
         </tr>
-    @endforeach
-@else
-    <tr><td colspan="4">No data available.</td></tr>
-@endif
+    </thead>
+    <tbody>
+        @forelse ($dataspm as $data)
+            <tr>
+                <td>{{ $data->nospm }}</td>
+                <td>{{ $data->uraian }}</td>
+                <td>{{ number_format($data->nominal_spm, 2, ',', '.') }}</td>
+                <td><a href="{{ route('detail.show', $data->nospm) }}" class="btn-detail">Detail</a></td>
+            </tr>
+        @empty
+            <tr><td colspan="4">No data available.</td></tr>
+        @endforelse
+    </tbody>
+</table>
 
+<!-- Pagination -->
+<div class="pagination">
+    {{ $dataspm->links() }}
+</div>
 
-            </tbody>
-        </table>
+        </div>
+    </div>
 
-        
-</body>
-</html>
-<script>
+    <script>
         function toggleMenu(menuId) {
             const menus = document.querySelectorAll('.sidebar ul li ul');
             menus.forEach(menu => {
@@ -410,6 +285,10 @@
                     menu.style.display = 'none';
                 }
             });
+        }
+
+        function redirectToPage(url) {
+            window.location.href = url;
         }
 
         // Set default menu open

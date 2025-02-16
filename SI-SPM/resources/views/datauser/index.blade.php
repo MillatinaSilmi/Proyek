@@ -163,7 +163,7 @@
                 <li>
                     <button onclick="toggleMenu('kelola-spm')" class="active">Kelola Data SPM</button>
                     <ul id="kelola-spm">
-                    <li><button onclick="redirectToPage('indexfilter')"> Data SPM</button></li>
+                    <li><button onclick="redirectToPage('dataspm')"> Data SPM</button></li>
                        </ul>
                     <script>
     function redirectToPage(url) {
@@ -193,7 +193,7 @@
                 <li>
                     <button onclick="toggleMenu('laporan-spm')">Laporan SPM</button>
                     <ul id="laporan-spm">
-                    <li><button onclick="redirectToPage('dataspm')"> Laporan By No SPM </button></li>    
+                    <li><button onclick="redirectToPage('indexfilteradmin')"> Laporan By No SPM </button></li>    
                     <li><button onclick="redirectToPage('laporanunit')"> Laporan By Unit </button></li>
                     <li><button onclick="redirectToPage('laporan')">Laporan By Klasifikasi Pembayaran</button></li>
                         
